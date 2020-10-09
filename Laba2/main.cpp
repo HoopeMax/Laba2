@@ -21,12 +21,14 @@ public:
 	//метод ввода сторон
 	void Input_side()
 	{
+		std::cout << std::endl;
 		std::cout << "Введите сторону а" << std::endl;
 		std::cin>> side_a;
 		std::cout << "Введите сторону b" << std::endl;
 		std::cin >> side_b;
 		std::cout << "Введите сторону c" << std::endl;
 		std::cin >> side_c;
+		std::cout << std::endl;
 	}
 
 	//метод проверки на существоание треугольника
@@ -73,29 +75,36 @@ public:
 	}
 
 	//метод поиска и вывода площади 
-	void Search_Output_Area(double perimeter)
+	double Search_Output_Area(double perimeter)
 	{
 		double half_perimeter = perimeter / 2;
 		double Area = sqrt(half_perimeter * (half_perimeter - side_a) * (half_perimeter - side_b) * (half_perimeter - side_c));
 		std::cout << std::endl << "Площадь треугольника = " << Area << std::endl;
+		return Area;
 	}
 };
 
 class Isosceles_Triangle : public  Triangle
 {
+public:
 	//метод проверки на равнобедренность треугольника 
 	void Сhecking_for_equal_sides()
 	{
-		if ((side_a== side_b)||(side_a== side_c)||(side_b== side_c))
+		bool check_equal_sides = true;
+		while (check_equal_sides)
 		{
-			std::cout << std::endl << "Трегольник равнобедренный "  << std::endl;
-
+			if ((side_a != side_b) && (side_a != side_c) && (side_b != side_c))
+			{
+				std::cout << std::endl << "Трегольник не равнобедренный, повторите ввод " << std::endl;
+				Input_side();
+				check_equal_sides = true;
+			}
+			else
+			{
+				check_equal_sides = false;
+			}
 		}
-		else
-		{ 
-			std::cout << std::endl << "Трегольник не равнобедренный " << std::endl;
-		}
-
+		
 	}
 
 };
@@ -107,29 +116,45 @@ int main(void)
 	
 	int size(0);
 	int size1(0);
+	double average(0);
 
 	setlocale(LC_ALL, "rus");
 
-	std::cout << std::endl << "Ведите количество треугольников: " ;
+	std::cout << std::endl << "Ведите количество N треугольников: " ;
 	size = Input_size();
 
-	std::cout << std::endl << "Ведите количество равнобедрнных треугольников: ";
+	std::cout << std::endl << "Ведите количество M равнобедрнных треугольников: ";
 	size1 = Input_size();
 
 
 	Triangle* object = new Triangle [size];
-	//Isosceles_Triangle object2 [size];
+	Isosceles_Triangle* object2 = new Isosceles_Triangle [size1];
 
 	for (int i=0; i < size; i++)
 	{
 		object[i].Input_side();
 		object[i].Existence_Of_A_Triangle();
 		object[i].Search_Output_Angles();
-		object[i].Search_Output_Area(object[i].Search_Output_Perimeter());
+		average += object[i].Search_Output_Area(object[i].Search_Output_Perimeter());//найти среднюю площадь для N треугольников
 		std::cout << std::endl << "____________________________" <<  std::endl;	
 		system("pause");
-		system("cls");
+		//system("cls");
 		
+	}
+	
+	std::cout << std::endl << "средняя площадь для N треугольников = " << average / size << std::endl;
+
+	for (int i = 0; i < size1; i++)
+	{
+		object2[i].Input_side();
+		object2[i].Existence_Of_A_Triangle();
+		object2[i].Сhecking_for_equal_sides();
+		object2[i].Search_Output_Angles();
+		object2[i].Search_Output_Area(object2[i].Search_Output_Perimeter());
+		std::cout << std::endl << "____________________________" << std::endl;
+		system("pause");
+		//system("cls");
+
 	}
 	
 	system("pause");
@@ -142,3 +167,5 @@ int  Input_size()
 	std::cin >> size;
 	return size;
 };
+
+
