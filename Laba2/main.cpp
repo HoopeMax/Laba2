@@ -2,7 +2,7 @@
 //План
 //1)Создать класс треугольник (поля класса:три стороны треугольника,
 							 //метод проверки на существоание треугольника,
-							 // перегруженный метод вычисления и вывода сведений о фигуре – длины сторон, углы, периметр, площадь)
+							 // метод вычисления и вывода сведений о фигуре – длины сторон, углы, периметр, площадь)
 //2)Создать производный класс – равнобедренный треугольник (предусмотреть в классе проверку(метод), является ли треугольник равнобедренным)
 //Задание: дано N треугольников и M равнобедренных треугольников, найти среднюю площадь для N треугольников и равнобедренный треугольник с наименьшей площадью
 
@@ -14,10 +14,10 @@
 //класс тругольника 
 class Triangle
 {
-public:
+protected:
 
 	double side_a, side_b, side_c;
-
+public:
 	//метод ввода сторон
 	void Input_side()
 	{
@@ -69,7 +69,6 @@ public:
 	double Search_Output_Perimeter()
 	{
 		double perimeter = side_a + side_b + side_c;
-		std::cout << std::endl << "Периметр треугольника = " << perimeter << std::endl;
 		return perimeter;
 		
 	}
@@ -79,10 +78,10 @@ public:
 	{
 		double half_perimeter = perimeter / 2;
 		double Area = sqrt(half_perimeter * (half_perimeter - side_a) * (half_perimeter - side_b) * (half_perimeter - side_c));
-		std::cout << std::endl << "Площадь треугольника = " << Area << std::endl;
 		return Area;
 	}
 };
+
 
 class Isosceles_Triangle : public  Triangle
 {
@@ -108,15 +107,19 @@ public:
 	}
 
 };
-
+//просто прикаольный ввод
 int  Input_size();
+//Вывод методов для трегольников М
+void Output_Triangle(int size, Triangle* object);
+//Вывод методов для трегольников N
+void Output_Isosceles_Triangle(int size1, Isosceles_Triangle* object2);
 
 int main(void)
 {
 	
 	int size(0);
 	int size1(0);
-	double average(0);
+	
 
 	setlocale(LC_ALL, "rus");
 
@@ -130,33 +133,10 @@ int main(void)
 	Triangle* object = new Triangle [size];
 	Isosceles_Triangle* object2 = new Isosceles_Triangle [size1];
 
-	for (int i=0; i < size; i++)
-	{
-		object[i].Input_side();
-		object[i].Existence_Of_A_Triangle();
-		object[i].Search_Output_Angles();
-		average += object[i].Search_Output_Area(object[i].Search_Output_Perimeter());//найти среднюю площадь для N треугольников
-		std::cout << std::endl << "____________________________" <<  std::endl;	
-		system("pause");
-		//system("cls");
-		
-	}
-	
-	std::cout << std::endl << "средняя площадь для N треугольников = " << average / size << std::endl;
+	Output_Triangle(size, object);
 
-	for (int i = 0; i < size1; i++)
-	{
-		object2[i].Input_side();
-		object2[i].Existence_Of_A_Triangle();
-		object2[i].Сhecking_for_equal_sides();
-		object2[i].Search_Output_Angles();
-		object2[i].Search_Output_Area(object2[i].Search_Output_Perimeter());
-		std::cout << std::endl << "____________________________" << std::endl;
-		system("pause");
-		//system("cls");
+	Output_Isosceles_Triangle(size1, object2);
 
-	}
-	
 	system("pause");
 	return 0;
 }
@@ -168,4 +148,51 @@ int  Input_size()
 	return size;
 };
 
+void Output_Triangle(int size, Triangle* object)
+{
+	double average(0);
+	for (int i = 0; i < size; i++)
+	{
+		object[i].Input_side();
+		object[i].Existence_Of_A_Triangle();
+		object[i].Search_Output_Angles();
+		std::cout << std::endl << "Периметр треугольника = " << object[i].Search_Output_Perimeter() << std::endl;
+		std::cout << std::endl << "Площадь треугольника = " << object[i].Search_Output_Area(object[i].Search_Output_Perimeter()) << std::endl;
+		average += object[i].Search_Output_Area(object[i].Search_Output_Perimeter());//найти среднюю площадь для N треугольников
+		std::cout << std::endl << "____________________________" << std::endl;
+		system("pause");
+		//system("cls");
 
+	}
+	std::cout << std::endl << "Средняя площадь для треугольников М = " << average << std::endl;
+}
+
+void Output_Isosceles_Triangle(int size1, Isosceles_Triangle* object2)
+{
+	double min = object2[0].Search_Output_Area(object2[0].Search_Output_Perimeter());
+
+	for (int i = 0; i < size1; i++)
+	{
+		object2[i].Input_side();
+		object2[i].Existence_Of_A_Triangle();
+		object2[i].Сhecking_for_equal_sides();
+		object2[i].Search_Output_Angles();
+
+		std::cout << std::endl << "Периметр треугольника = " << object2[i].Search_Output_Perimeter() << std::endl;
+		std::cout << std::endl << "Площадь треугольника = " << object2[i].Search_Output_Area(object2[i].Search_Output_Perimeter()) << std::endl;
+
+		//найти минимальную площадь для M треугольников 
+		if (min > object2[i].Search_Output_Area(object2[i].Search_Output_Perimeter()))
+		{
+			min = object2[i].Search_Output_Area(object2[i].Search_Output_Perimeter());
+		}
+
+
+		std::cout << std::endl << "____________________________" << std::endl;
+		system("pause");
+		//system("cls");
+	}
+
+	std::cout << std::endl << "минимальная площадь =" << min << std::endl;
+
+}
