@@ -80,6 +80,7 @@ public:
 		double Area = sqrt(half_perimeter * (half_perimeter - side_a) * (half_perimeter - side_b) * (half_perimeter - side_c));
 		return Area;
 	}
+
 };
 
 
@@ -188,6 +189,8 @@ int main(void)
 	Output_Triangle(size, object);
 
 	Output_Isosceles_Triangle(size1, object2);
+	delete[]  object;
+	delete[]  object2;
 
 	system("pause");
 	return 0;
