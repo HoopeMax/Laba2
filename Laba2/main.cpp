@@ -109,6 +109,53 @@ public:
 		}
 		
 	}
+	virtual double Search_Output_Perimeter()
+	{
+
+		double perimeter1(0);
+		if (side_a == side_b)
+		{
+
+			perimeter1 = (2 * side_a) + side_c;
+		}
+		else
+			if (side_a == side_c)
+			{
+				perimeter1 = (2 * side_a) + side_b;
+			}
+			else
+				if (side_b == side_c)
+				{
+					perimeter1 = (2 * side_b) + side_a;
+				}
+		return perimeter1;
+	}
+
+	virtual double Search_Output_Area()
+	{
+		double height(0);
+		double area(0);
+
+		if (side_a == side_b)
+		{
+			height = sqrt (pow(side_b, 2)- (pow((side_c / 2), 2)));
+			area = (height * (side_c / 2));
+		}
+		else
+			if (side_a == side_c)
+			{
+				height = sqrt(pow(side_a, 2) - (pow((side_b / 2), 2)));
+				area = (height * (side_b / 2)) ;
+			}
+			else
+				if (side_b == side_c)
+				{
+					height = sqrt(pow(side_b, 2) - (pow((side_a / 2), 2)));
+					area = (height * (side_a / 2));
+				}
+
+		return area;
+	}
 
 };
 //просто прикольный ввод
@@ -179,7 +226,7 @@ void Output_Triangle(unsigned short int size, Triangle* object)
 
 void Output_Isosceles_Triangle(unsigned short int size1, Isosceles_Triangle* object2)
 {
-	double min = object2[0].Search_Output_Area(object2[0].Search_Output_Perimeter());
+	double min = LONG_MAX;
 
 	for (unsigned short int i = 0; i < size1; i++)
 	{
@@ -189,12 +236,12 @@ void Output_Isosceles_Triangle(unsigned short int size1, Isosceles_Triangle* obj
 		object2[i].Search_Output_Angles();
 
 		std::cout << std::endl << "Периметр " << i + 1 << "-го треугольника = " << object2[i].Search_Output_Perimeter() << std::endl;
-		std::cout << std::endl << "Площадь " << i + 1 << "-го треугольника = " << object2[i].Search_Output_Area(object2[i].Search_Output_Perimeter()) << std::endl;
+		std::cout << std::endl << "Площадь " << i + 1 << "-го треугольника = " << object2[i].Search_Output_Area() << std::endl;
 
 		//найти минимальную площадь для M треугольников 
-		if (min > object2[i].Search_Output_Area(object2[i].Search_Output_Perimeter()))
+		if (min > object2[i].Search_Output_Area())
 		{
-			min = object2[i].Search_Output_Area(object2[i].Search_Output_Perimeter());
+			min = object2[i].Search_Output_Area();
 		}
 
 
